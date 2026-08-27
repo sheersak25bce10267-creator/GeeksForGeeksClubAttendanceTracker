@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Attendance Dashboard</h1>
+            <div class="summary-cards">
+                <div class="card present">
+                    <h3>Present</h3>
+                    <h2>{{ present }}</h2>
+                </div>
+                <div class="card absent">
+                    <h3>Absent</h3>
+                    <h2>{{ absent }}</h2>
+                </div>
+            </div>
+        </header>
+
+        <section class="registration-section">
+            <h2>Register Participant</h2>
+            <form action="/add" method="POST" class="add-form">
+                <input type="text" name="participant_id" placeholder="Participant ID" required>
+                <input type="text" name="name" placeholder="Full Name" required>
+                <button type="submit">Register</button>
+            </form>
+        </section>
+
+        <section class="table-section">
+            <h2>Participant List</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in participants %}
+                        <tr>
+                            <td>{{ p[0] }}</td>
+                            <td>{{ p[1] }}</td>
+                            <td><span class="badge {{ p[2].lower() }}">{{ p[2] }}</span></td>
+                            <td class="actions">
+                                <a href="/update/{{ p[0] }}/Present" class="btn btn-present">Mark Present</a>
+                                <a href="/update/{{ p[0] }}/Absent" class="btn btn-absent">Mark Absent</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
